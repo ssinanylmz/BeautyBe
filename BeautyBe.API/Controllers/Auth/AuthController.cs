@@ -48,9 +48,7 @@ namespace BeautyBe.API.Controllers.Auth
                         new Claim(JwtRegisteredClaimNames.Sub,_configuration["Jwt:Subject"]),
                         new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
-                        new Claim("UserName",user.UserName),
-                        new Claim("Email",user.Email),
-                        new Claim("Password",user.PasswordCrypt)
+                        new Claim("UserName",user.UserName)
                     };
                     
                     var accessToken = _tokenService.GenerateAccessToken(claims);
