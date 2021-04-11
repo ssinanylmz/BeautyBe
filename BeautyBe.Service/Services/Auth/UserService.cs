@@ -16,9 +16,9 @@ namespace BeautyBe.Service.Services.Auth
         {
         }
 
-        public async Task<User> GetUserWithRolesByIdAsync(int UserId)
+        public async Task<User> LoginGetUserAsync(string userName, string password, string email)
         {
-            return await _unitOfWork.User.GetUserWithRolesByIdAsync(UserId);
+            return await _unitOfWork.User.LoginGetUserAsync(userName, password, email);
         }
     }
 }

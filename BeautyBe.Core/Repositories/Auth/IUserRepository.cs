@@ -8,6 +8,6 @@ namespace BeautyBe.Core.Repositories.Auth
 {
     public interface IUserRepository:IRepository<User>
     {
-        Task<User> GetUserWithRolesByIdAsync(int UserId);
+        Task<User> LoginGetUserAsync(string userName,string password,string email);
     }
 }

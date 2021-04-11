@@ -10,7 +10,7 @@ namespace BeautyBe.API.Dtos.Auth
     {
         public string UserName { get; set; }
         [Required]
-        public string Password { get; set; }
+        public string PasswordCrypt { get; set; }
         public string Email { get; set; }
     }
 }

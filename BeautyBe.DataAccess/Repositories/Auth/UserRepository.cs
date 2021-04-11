@@ -15,9 +15,9 @@ namespace BeautyBe.DataAccess.Repositories.Auth
         {
 
         }
-        public Task<User> GetUserWithRolesByIdAsync(int UserId)
+        public Task<User> LoginGetUserAsync(string userName, string password, string email)
         {
-            return _coreDbContext.Users.FirstOrDefaultAsync(x => x.UserId == UserId);
+            return _coreDbContext.Users.FirstOrDefaultAsync(x => (x.UserName==userName || x.Email== email) && x.PasswordCrypt==password);
         }
     }
 }

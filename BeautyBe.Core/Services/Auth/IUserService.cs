@@ -8,6 +8,6 @@ namespace BeautyBe.Core.Services.Auth
 {
     public interface IUserService : IService<User>
     {
-        Task<User> GetUserWithRolesByIdAsync(int UserId); 
+        Task<User> LoginGetUserAsync(string userName, string password, string email); 
     }
 }
