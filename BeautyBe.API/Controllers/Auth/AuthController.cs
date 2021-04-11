@@ -19,13 +19,13 @@ namespace BeautyBe.API.Controllers.Auth
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
-        public LoginController(IUserService userService,ITokenService tokenService,IMapper mapper,IConfiguration configuration)
+        public AuthController(IUserService userService,ITokenService tokenService,IMapper mapper,IConfiguration configuration)
         {
             _userService = userService;
             _tokenService = tokenService;
@@ -33,12 +33,12 @@ namespace BeautyBe.API.Controllers.Auth
             _configuration = configuration;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(LoginDto loginInfo)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginDto loginInfo)
         {
             if(loginInfo != null && (loginInfo.UserName !=null || loginInfo.Email != null) && loginInfo.PasswordCrypt!=null)
             {
-                var user =await GetUser(loginInfo.UserName, loginInfo.PasswordCrypt, loginInfo.Email);
+                var user =await CheckUser(loginInfo.UserName, loginInfo.PasswordCrypt, loginInfo.Email);
                
                 if (user != null)
                 {
@@ -76,14 +76,17 @@ namespace BeautyBe.API.Controllers.Auth
             }
         }
         [HttpPost("RefreshToken")]
-        public async Task<IActionResult> Refresh(string accessToken,string refreshToken)
+        public async Task<IActionResult> RefreshToken(string accessToken,string refreshToken)
         {
             if (refreshToken == null)
             {
                 return BadRequest("Invalid client request");
             }
             var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
-            var userName = principal.Identity.Name; //this is mapped to the Name claim by default
+            var identity = principal.Identity as ClaimsIdentity; 
+
+            var userName=identity.FindFirst("UserName").Value;
+
             var user = await _userService.SingleOrDefaultAsync(x => x.UserName == userName);
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             {
@@ -100,10 +103,10 @@ namespace BeautyBe.API.Controllers.Auth
             });
         }
 
-        [HttpGet("GetUser")]
+        [HttpGet("CheckUser")]
 
         [Authorize]
-        public async Task<LoginDto> GetUser(string userName, string password, string email)
+        public async Task<LoginDto> CheckUser(string userName, string password, string email)
         {
             var users = await _userService.LoginGetUserAsync(userName, password, email);
             LoginDto userDto = _mapper.Map<LoginDto>(users);
