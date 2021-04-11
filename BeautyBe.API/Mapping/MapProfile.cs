@@ -14,7 +14,6 @@ namespace BeautyBe.API.Mapping
         {
             CreateMap<User, LoginDto>();
             CreateMap<LoginDto, User>();
-
         }
     }
 }

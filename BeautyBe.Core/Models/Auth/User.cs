@@ -25,5 +25,7 @@ namespace BeautyBe.Core.Models.Auth
         public DateTime ModifiedDate { get; set; }
         public bool IsActive { get; set; }
         public bool IsDelete { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

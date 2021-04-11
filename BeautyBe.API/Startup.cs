@@ -42,6 +42,7 @@ namespace BeautyBe.API
             services.AddScoped(typeof(IRepository<>), typeof(Service<>));
             services.AddScoped(typeof(IService<>), typeof(Service<>));
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<CoreDbContext>(options =>
             {
